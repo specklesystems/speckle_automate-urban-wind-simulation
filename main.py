@@ -9,6 +9,9 @@ from speckle_automate import (
     AutomationContext,
     execute_automate_function,
 )
+from specklepy.objects.base import Base
+from specklepy.objects.geometry import Brep, Box
+
 
 from flatten import flatten_base
 
@@ -21,13 +24,8 @@ class FunctionInputs(AutomateBase):
     https://docs.pydantic.dev/latest/usage/models/
     """
 
-    forbidden_speckle_type: str = Field(
-        title="Forbidden speckle type",
-        description=(
-            "If a object has the following speckle_type,"
-            " it will be marked with an error."
-        ),
-    )
+    wind_direction: float
+    wind_speed: float
 
 
 def automate_function(
@@ -45,42 +43,41 @@ def automate_function(
     """
     # the context provides a conveniet way, to receive the triggering version
     version_root_object = automate_context.receive_version()
+    accepted_types = [Brep.speckle_type, Box.speckle_type]
+    objects_to_create_stl = []
+
+    print(function_inputs.wind_direction)
+    print(function_inputs.wind_speed)
 
     count = 0
     for b in flatten_base(version_root_object):
-        if b.speckle_type == function_inputs.forbidden_speckle_type:
+        if b.speckle_type in accepted_types:
             if not b.id:
                 raise ValueError("Cannot operate on objects without their id's.")
-            automate_context.add_object_error(
+            
+            objects_to_create_stl.append(b)
+            automate_context.add_object_info(
                 b.id,
-                "This project should not contain the type: " f"{b.speckle_type}",
+                "Object included into simulation domain with " f"{b.speckle_type} type."
             )
             count += 1
 
-    if count > 0:
+    if count == 0:
         # this is how a run is marked with a failure cause
         automate_context.mark_run_failed(
             "Automation failed: "
-            f"Found {count} object that have one of the forbidden speckle types: "
-            f"{function_inputs.forbidden_speckle_type}"
+            f"Not found appropriate object to run CFD simulation."
         )
-
-    else:
-        automate_context.mark_run_success("No forbidden types found.")
 
     # if the function generates file results, this is how it can be
     # attached to the Speckle project / model
     # automate_context.store_file_result("./report.pdf")
+    # base = Base()
+    # automate_context.create_new_version_in_project(base, automate_context.speckle_client.branch.create(automate_context.automation_run_data.project_id, "whatever"))
+    # branch_or_error = automate_context.speckle_client.branch.get(automate_context.automation_run_data.project_id, "whatever")
 
-
-def automate_function_without_inputs(automate_context: AutomationContext) -> None:
-    """A function example without inputs.
-
-    If your function does not need any input variables,
-     besides what the automation context provides,
-     the inputs argument can be omitted.
-    """
-    pass
+    # We shouldn't create new version under the same model. This will trigger infinite loop -> Don't
+    # automate_context.create_new_version_in_project(base, automate_context.automation_run_data.model_id)
 
 
 # make sure to call the function with the executor
