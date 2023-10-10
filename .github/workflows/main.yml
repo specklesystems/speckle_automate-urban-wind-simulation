@@ -1,0 +1,38 @@
+name: 'build and deploy Speckle functions'
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish-automate-function-version: # make sure the action works on a clean machine without building
+    env:
+      FUNCTION_SCHEMA_FILE_NAME: functionSchema.json
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.4.0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.3.2
+          virtualenvs-create: false
+          virtualenvs-in-project: false
+          installer-parallel: true
+      - name: Restore dependencies
+        run: poetry install --no-root
+      - name: Extract functionInputSchema
+        id: extract_schema
+        run: |
+          python main.py generate_schema ${HOME}/${{ env.FUNCTION_SCHEMA_FILE_NAME }}
+      - name: Speckle Automate Function - Build and Publish
+        uses: specklesystems/speckle-automate-github-composite-action@0.6.7
+        with:
+          speckle_automate_url: ${{ env.SPECKLE_AUTOMATE_URL || 'https://automate.speckle.dev' }} 
+          speckle_token: ${{ secrets.SPECKLE_FUNCTION_TOKEN }}
+          speckle_function_id: ${{ secrets.SPECKLE_FUNCTION_ID }}
+          speckle_function_input_schema_file_path: ${{ env.FUNCTION_SCHEMA_FILE_NAME }}
+          speckle_function_command: 'python main.py run'

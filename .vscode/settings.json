@@ -1,0 +1,9 @@
+{
+  "cSpell.words": [
+    "camelcase",
+    "pydantic",
+    "stringcase",
+    "typer"
+  ],
+  "python.defaultInterpreterPath": ".venv/bin/python"
+}

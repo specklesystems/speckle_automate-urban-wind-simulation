@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "speckle-automate-py"
+version = "0.1.0"
+description = "Example function for Speckle Automate using specklepy"
+authors = ["Gergő Jedlicska <gergo@jedlicska.com>"]
+readme = "README.md"
+packages = [{include = "src/speckle_automate_py"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+specklepy = "^2.17.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+mypy = "^1.3.0"
+ruff = "^0.0.271"
+pytest = "^7.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "UP",  # pyupgrade
+  "D",   # pydocstyle
+  "I",   # isort
+]
+
+[tool.ruff.pydocstyle]
+convention = "google"
