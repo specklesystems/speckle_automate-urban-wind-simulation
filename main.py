@@ -2,7 +2,8 @@
 
 use the automation_context module to wrap your function in an Autamate context helper
 """
-
+import os, subprocess
+import itertools
 from pydantic import Field
 from speckle_automate import (
     AutomateBase,
@@ -11,9 +12,14 @@ from speckle_automate import (
 )
 from specklepy.objects.base import Base
 from specklepy.objects.geometry import Box, Brep
+from specklepy.api import operations
+from specklepy.transports.server import ServerTransport
 
 from flatten import flatten_base
-
+from archaea_simulation.simulation_objects.domain import Domain
+from archaea_simulation.utils.path import get_cfd_export_path
+from archaea_simulation.speckle.vtk_to_speckle import vtk_to_speckle
+from archaea.geometry.mesh import Mesh
 
 class FunctionInputs(AutomateBase):
     """These are function author defined values.
@@ -42,21 +48,72 @@ def automate_function(
     """
     # the context provides a conveniet way, to receive the triggering version
     version_root_object = automate_context.receive_version()
-    accepted_types = [Brep.speckle_type, Box.speckle_type]
+    accepted_types = [Brep.speckle_type]
     objects_to_create_stl = []
+    flatten_base_objects = flatten_base(version_root_object)
 
     count = 0
-    for b in flatten_base(version_root_object):
+    for b in flatten_base_objects:
         if b.speckle_type in accepted_types:
             if not b.id:
                 raise ValueError("Cannot operate on objects without their id's.")
             
             objects_to_create_stl.append(b)
-            automate_context.add_object_info(
-                b.id,
-                "Object included into simulation domain with " f"{b.speckle_type} type."
-            )
+            # automate_context.add_object_info(
+            #     b.id,
+            #     "Object included into simulation domain with " f"{b.speckle_type} type."
+            # )
             count += 1
+
+    speckle_meshes = []
+    for speckle_mesh in objects_to_create_stl:
+        speckle_meshes += speckle_mesh.displayValue
+
+    archaea_meshes = []
+    for speckle_mesh in speckle_meshes:
+        # vertices = list(itertools.chain.from_iterable(vertices.data for vertices in speckle_mesh.vertices))
+        # faces = list(itertools.chain.from_iterable(faces.data for faces in speckle_mesh.faces))
+        archaea_mesh = Mesh.from_ngon_mesh(speckle_mesh.vertices, speckle_mesh.faces)
+        archaea_meshes.append(archaea_mesh)
+
+    domain = Domain.from_meshes(archaea_meshes)
+    archaea_folder = get_cfd_export_path()
+    if not os.path.exists(archaea_folder):
+        os.makedirs(archaea_folder)
+
+    case_folder = os.path.join(archaea_folder, version_root_object.id)
+    # domain.create_case(case_folder)
+    # cmd = os.path.join(case_folder, './Allrun')
+    # pipefile = open('output', 'w')
+    # retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
+    # pipefile.close()
+    # os.remove('output')
+
+    vtk_file = os.path.join(case_folder, 'postProcessing',
+                            'cutPlaneSurface', '400', 'U_cutPlane.vtk')
+    
+    result_mesh = vtk_to_speckle(vtk_file)
+
+    result = Base()
+    result.data = [result_mesh]
+
+    transport = ServerTransport(automate_context.automation_run_data.project_id, automate_context.speckle_client)
+    obj_id = operations.send(result, [transport])
+    result_branch_name = automate_context.automation_run_data.branch_name + "_result"
+    automate_context.speckle_client.branch.create(
+        automate_context.automation_run_data.project_id, 
+        result_branch_name
+        )
+    
+
+    # now create a commit on that branch with your updated data!
+    commit_id = automate_context.speckle_client.commit.create(
+        automate_context.automation_run_data.project_id,
+        obj_id,
+        result_branch_name,
+        message="Sent from Archaea.",
+        source_application='Archaea'
+    )
 
     if count == 0:
         # this is how a run is marked with a failure cause

@@ -100,7 +100,7 @@ def automation_run_data(
     """Set up an automation context for testing."""
     project_id: str = "abbc6dc0f7"
     model_name: str = "brep"
-    version_id: str = "999815d145"
+    version_id: str = "df721bf0c1"
     model = test_client.branch.get(project_id, model_name, commits_limit=1)
 
     model_id: str = model.id
