@@ -10,8 +10,7 @@ from speckle_automate import (
     execute_automate_function,
 )
 from specklepy.objects.base import Base
-from specklepy.objects.geometry import Brep, Box
-
+from specklepy.objects.geometry import Box, Brep
 
 from flatten import flatten_base
 
@@ -46,9 +45,6 @@ def automate_function(
     accepted_types = [Brep.speckle_type, Box.speckle_type]
     objects_to_create_stl = []
 
-    print(function_inputs.wind_direction)
-    print(function_inputs.wind_speed)
-
     count = 0
     for b in flatten_base(version_root_object):
         if b.speckle_type in accepted_types:
@@ -66,8 +62,11 @@ def automate_function(
         # this is how a run is marked with a failure cause
         automate_context.mark_run_failed(
             "Automation failed: "
-            f"Not found appropriate object to run CFD simulation."
+            "Not found appropriate object to run CFD simulation."
         )
+
+    else:
+        automate_context.mark_run_success("Object found to run simulation!")
 
     # if the function generates file results, this is how it can be
     # attached to the Speckle project / model

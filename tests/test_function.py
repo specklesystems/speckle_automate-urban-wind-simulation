@@ -11,7 +11,6 @@ from speckle_automate import (
     AutomationStatus,
     run_function,
 )
-from specklepy.api import operations
 from specklepy.api.client import SpeckleClient
 from specklepy.objects.base import Base
 from specklepy.transports.server import ServerTransport
@@ -93,29 +92,18 @@ def test_client(speckle_server_url: str, speckle_token: str) -> SpeckleClient:
     return test_client
 
 
-@pytest.fixture()
-def test_object() -> Base:
-    """Create a Base model for testing."""
-    root_object = Base()
-    root_object.foo = "bar"
-    return root_object
-
 
 @pytest.fixture()
 def automation_run_data(
-    test_object: Base, test_client: SpeckleClient, speckle_server_url: str
+    test_client: SpeckleClient, speckle_server_url: str
 ) -> AutomationRunData:
     """Set up an automation context for testing."""
-    project_id = test_client.stream.create("Automate function e2e test")
-    branch_name = "main"
+    project_id: str = "abbc6dc0f7"
+    model_name: str = "brep"
+    version_id: str = "999815d145"
+    model = test_client.branch.get(project_id, model_name, commits_limit=1)
 
-    model = test_client.branch.get(project_id, branch_name, commits_limit=1)
     model_id: str = model.id
-
-    root_obj_id = operations.send(
-        test_object, [ServerTransport(project_id, test_client)]
-    )
-    version_id = test_client.commit.create(project_id, root_obj_id)
 
     automation_name = crypto_random_string(10)
     automation_id = crypto_random_string(10)
@@ -136,7 +124,7 @@ def automation_run_data(
     return AutomationRunData(
         project_id=project_id,
         model_id=model_id,
-        branch_name=branch_name,
+        branch_name=model_name,
         version_id=version_id,
         speckle_server_url=speckle_server_url,
         automation_id=automation_id,
