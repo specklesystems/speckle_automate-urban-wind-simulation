@@ -76,11 +76,17 @@ def automate_function(
         archaea_mesh = Mesh.from_ngon_mesh(speckle_mesh.vertices, speckle_mesh.faces)
         archaea_meshes.append(archaea_mesh)
 
+    # Init domain
     domain = Domain.from_meshes(archaea_meshes)
+    domain.wind_direction = function_inputs.wind_direction
+    domain.wind_speed = function_inputs.wind_speed
+
+    # Get folder to copy cases
     archaea_folder = get_cfd_export_path()
     if not os.path.exists(archaea_folder):
         os.makedirs(archaea_folder)
 
+    # Get case folder
     case_folder = os.path.join(archaea_folder, version_root_object.id)
     domain.create_case(case_folder)
     cmd = os.path.join(case_folder, './Allrun')
