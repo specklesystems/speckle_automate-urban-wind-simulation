@@ -31,8 +31,17 @@ class FunctionInputs(AutomateBase):
     https://docs.pydantic.dev/latest/usage/models/
     """
 
-    wind_direction: float
-    wind_speed: float
+    wind_direction: float = Field(
+        title="Wind Direction",
+        description=(
+            "Wind direction represents as azimuth angle is like a compass direction"
+            "with North = 0°, East = 90°, South = 180°, West = 270°."
+        ),
+    )
+    wind_speed: float = Field(
+        title="Wind Speed",
+        description="Wind speed (m/s) in XY plane."
+    )
 
 
 def automate_function(
