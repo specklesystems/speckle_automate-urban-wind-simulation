@@ -2,24 +2,26 @@
 
 use the automation_context module to wrap your function in an Autamate context helper
 """
-import os, subprocess
-import itertools
+import os
+import subprocess
+
+from archaea.geometry.mesh import Mesh
+from archaea_simulation.simulation_objects.domain import Domain
+from archaea_simulation.speckle.vtk_to_speckle import vtk_to_speckle
+from archaea_simulation.utils.path import get_cfd_export_path
 from pydantic import Field
 from speckle_automate import (
     AutomateBase,
     AutomationContext,
     execute_automate_function,
 )
-from specklepy.objects.base import Base
-from specklepy.objects.geometry import Box, Brep
 from specklepy.api import operations
+from specklepy.objects.base import Base
+from specklepy.objects.geometry import Brep
 from specklepy.transports.server import ServerTransport
 
 from flatten import flatten_base
-from archaea_simulation.simulation_objects.domain import Domain
-from archaea_simulation.utils.path import get_cfd_export_path
-from archaea_simulation.speckle.vtk_to_speckle import vtk_to_speckle
-from archaea.geometry.mesh import Mesh
+
 
 class FunctionInputs(AutomateBase):
     """These are function author defined values.
@@ -71,8 +73,6 @@ def automate_function(
 
     archaea_meshes = []
     for speckle_mesh in speckle_meshes:
-        # vertices = list(itertools.chain.from_iterable(vertices.data for vertices in speckle_mesh.vertices))
-        # faces = list(itertools.chain.from_iterable(faces.data for faces in speckle_mesh.faces))
         archaea_mesh = Mesh.from_ngon_mesh(speckle_mesh.vertices, speckle_mesh.faces)
         archaea_meshes.append(archaea_mesh)
 
@@ -82,12 +82,12 @@ def automate_function(
         os.makedirs(archaea_folder)
 
     case_folder = os.path.join(archaea_folder, version_root_object.id)
-    # domain.create_case(case_folder)
-    # cmd = os.path.join(case_folder, './Allrun')
-    # pipefile = open('output', 'w')
-    # retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
-    # pipefile.close()
-    # os.remove('output')
+    domain.create_case(case_folder)
+    cmd = os.path.join(case_folder, './Allrun')
+    pipefile = open('output', 'w')
+    retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
+    pipefile.close()
+    os.remove('output')
 
     vtk_file = os.path.join(case_folder, 'postProcessing',
                             'cutPlaneSurface', '400', 'U_cutPlane.vtk')
@@ -104,7 +104,6 @@ def automate_function(
         automate_context.automation_run_data.project_id, 
         result_branch_name
         )
-    
 
     # now create a commit on that branch with your updated data!
     commit_id = automate_context.speckle_client.commit.create(
