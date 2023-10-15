@@ -101,6 +101,7 @@ def automation_run_data(
     project_id: str = "abbc6dc0f7"
     model_name: str = "brep"
     version_id: str = "df721bf0c1"
+    version_id_2: str = "19d9b2bd38"
     model = test_client.branch.get(project_id, model_name, commits_limit=1)
 
     model_id: str = model.id
@@ -125,7 +126,7 @@ def automation_run_data(
         project_id=project_id,
         model_id=model_id,
         branch_name=model_name,
-        version_id=version_id,
+        version_id=version_id_2,
         speckle_server_url=speckle_server_url,
         automation_id=automation_id,
         automation_revision_id=automation_revision_id,
@@ -141,7 +142,7 @@ def test_function_run(automation_run_data: AutomationRunData, speckle_token: str
     automate_sdk = run_function(
         AutomationContext.initialize(automation_run_data, speckle_token),
         automate_function,
-        FunctionInputs(wind_speed=10, wind_direction=150),
+        FunctionInputs(wind_speed=10, wind_direction=0),
     )
 
     assert automate_sdk.run_status == AutomationStatus.FAILED

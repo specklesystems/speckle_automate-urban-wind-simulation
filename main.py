@@ -8,7 +8,7 @@ import subprocess
 from archaea.geometry.mesh import Mesh
 from archaea_simulation.simulation_objects.domain import Domain
 from archaea_simulation.speckle.vtk_to_speckle import vtk_to_speckle
-from archaea_simulation.utils.path import get_cfd_export_path
+from archaea_simulation.cfd.utils.path import get_cfd_export_path
 from pydantic import Field
 from speckle_automate import (
     AutomateBase,
