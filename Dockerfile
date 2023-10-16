@@ -3,6 +3,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # setup timezone
 ENV TZ=Europe/Istanbul
+ENV VM_PROJECT_DIR='/opt/openfoam9'
+
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt update
@@ -11,7 +13,6 @@ RUN wget -O - https://dl.openfoam.org/gpg.key > /etc/apt/trusted.gpg.d/openfoam.
 RUN add-apt-repository http://dl.openfoam.org/ubuntu
 RUN apt-get update
 RUN apt-get -y --no-install-recommends install openfoam9
-ENV VM_PROJECT_DIR='/opt/openfoam9'
 
 RUN echo "source /opt/openfoam9/etc/bashrc" >> /root/.bashrc
 
