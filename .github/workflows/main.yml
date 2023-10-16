@@ -27,7 +27,7 @@ jobs:
       - name: Extract functionInputSchema
         id: extract_schema
         run: |
-          python main.py generate_schema ${HOME}/${{ env.FUNCTION_SCHEMA_FILE_NAME }}
+          python3 main.py generate_schema ${HOME}/${{ env.FUNCTION_SCHEMA_FILE_NAME }}
       - name: Speckle Automate Function - Build and Publish
         uses: specklesystems/speckle-automate-github-composite-action@0.6.7
         with:
@@ -35,4 +35,4 @@ jobs:
           speckle_token: ${{ secrets.SPECKLE_FUNCTION_TOKEN }}
           speckle_function_id: ${{ secrets.SPECKLE_FUNCTION_ID }}
           speckle_function_input_schema_file_path: ${{ env.FUNCTION_SCHEMA_FILE_NAME }}
-          speckle_function_command: 'python main.py run'
+          speckle_function_command: 'python3 main.py run'
