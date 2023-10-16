@@ -58,6 +58,7 @@ def automate_function(
         function_inputs: An instance object matching the defined schema.
     """
     # the context provides a conveniet way, to receive the triggering version
+    subprocess.run("source /opt/openfoam9/etc/bashrc", shell=True)
     version_root_object = automate_context.receive_version()
     accepted_types = [Brep.speckle_type]
     objects_to_create_stl = []
