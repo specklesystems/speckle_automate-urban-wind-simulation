@@ -35,4 +35,4 @@ jobs:
           speckle_token: ${{ secrets.SPECKLE_FUNCTION_TOKEN }}
           speckle_function_id: ${{ secrets.SPECKLE_FUNCTION_ID }}
           speckle_function_input_schema_file_path: ${{ env.FUNCTION_SCHEMA_FILE_NAME }}
-          speckle_function_command: 'sleep 10m #'
+          speckle_function_command: 'python3 main.py run'
