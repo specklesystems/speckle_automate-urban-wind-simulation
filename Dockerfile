@@ -3,7 +3,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # setup timezone
 ENV TZ=Europe/Istanbul
-ENV VM_PROJECT_DIR='/opt/openfoam9'
+ENV VM_PROJECT_DIR=/opt/openfoam9
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
