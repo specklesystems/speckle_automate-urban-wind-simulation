@@ -100,9 +100,8 @@ def automate_function(
     domain.create_case(case_folder)
     cmd = os.path.join(case_folder, './Allrun')
     pipefile = open('output', 'w')
-    copy_env = os.environ.copy()
-    copy_env['VM_PROJECT_DIR'] = '/opt/openfoam9'
-    retcode = subprocess.call(cmd, shell=True, stdout=pipefile, env=copy_env)
+    print(os.getenv('VM_PROJECT_DIR'))
+    retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
     pipefile.close()
     os.remove('output')
 
