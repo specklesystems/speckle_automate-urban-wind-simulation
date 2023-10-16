@@ -57,8 +57,10 @@ def automate_function(
             It also has conveniece methods attach result data to the Speckle model.
         function_inputs: An instance object matching the defined schema.
     """
+    
+    subprocess.run("/bin/bash -c 'source /opt/openfoam9/etc/bashrc'", shell=True)
+
     # the context provides a conveniet way, to receive the triggering version
-    subprocess.run("source /opt/openfoam9/etc/bashrc", shell=True)
     version_root_object = automate_context.receive_version()
     accepted_types = [Brep.speckle_type]
     objects_to_create_stl = []
