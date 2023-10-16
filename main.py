@@ -100,7 +100,6 @@ def automate_function(
     domain.create_case(case_folder)
     cmd = os.path.join(case_folder, './Allrun')
     pipefile = open('output', 'w')
-    print(os.getenv('VM_PROJECT_DIR'))
     retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
     pipefile.close()
     os.remove('output')
