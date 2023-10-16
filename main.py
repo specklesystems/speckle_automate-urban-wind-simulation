@@ -100,7 +100,7 @@ def automate_function(
     domain.create_case(case_folder)
     cmd = os.path.join(case_folder, './Allrun')
     pipefile = open('output', 'w')
-    retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
+    retcode = subprocess.call(cmd, shell=True, stdout=pipefile, env=os.environ.copy())
     pipefile.close()
     os.remove('output')
 
