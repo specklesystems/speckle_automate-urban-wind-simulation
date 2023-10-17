@@ -57,9 +57,9 @@ def automate_function(
             It also has conveniece methods attach result data to the Speckle model.
         function_inputs: An instance object matching the defined schema.
     """
-    
-    subprocess.run("/bin/bash -c 'source /opt/openfoam9/etc/bashrc'", shell=True)
 
+    subprocess.run("/bin/bash -c 'source /opt/openfoam9/etc/bashrc'", shell=True)
+    
     # the context provides a conveniet way, to receive the triggering version
     version_root_object = automate_context.receive_version()
     accepted_types = [Brep.speckle_type]
@@ -101,7 +101,9 @@ def automate_function(
     # Get case folder
     case_folder = os.path.join(archaea_folder, version_root_object.id)
     domain.create_case(case_folder)
-    cmd = os.path.join(case_folder, './Allrun')
+    cmd_path = os.path.join(case_folder, './Allrun')
+    cmd = "/bin/bash -c '{cmd_path}'".format(cmd_path=cmd_path)
+
     pipefile = open('output', 'w')
     retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
     pipefile.close()
