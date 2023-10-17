@@ -105,7 +105,8 @@ def automate_function(
     cmd = "/bin/bash -c '{cmd_path}'".format(cmd_path=cmd_path)
 
     pipefile = open('output', 'w')
-    retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
+    # retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
+    subprocess.run(cmd, shell=True)
     pipefile.close()
     os.remove('output')
 
