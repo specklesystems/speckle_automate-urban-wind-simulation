@@ -89,9 +89,7 @@ def automate_function(
         archaea_meshes.append(archaea_mesh)
 
     # Init domain
-    domain = Domain.from_meshes(archaea_meshes, x_scale=2, y_scale=2, z_scale=2)
-    domain.wind_direction = function_inputs.wind_direction
-    domain.wind_speed = function_inputs.wind_speed
+    domain = Domain.from_meshes(archaea_meshes, x_scale=2, y_scale=2, z_scale=2, wind_direction=function_inputs.wind_direction, wind_speed=function_inputs.wind_speed)
 
     # Get folder to copy cases
     archaea_folder = get_cfd_export_path()
