@@ -140,6 +140,31 @@ def automate_function(
     else:
         automate_context.mark_run_success("Object found to run simulation!")
 
+    blockMesh_log = os.path.join(case_folder, 'log.blockMesh')
+    add_to_store_if_exist(automate_context, blockMesh_log)
+
+    decomposePar_log = os.path.join(case_folder, 'log.decomposePar')
+    add_to_store_if_exist(automate_context, decomposePar_log)
+    
+    patchSummary_log = os.path.join(case_folder, 'log.patchSummary')
+    add_to_store_if_exist(automate_context, patchSummary_log)
+
+    reconstructPar_log = os.path.join(case_folder, 'log.reconstructPar')
+    add_to_store_if_exist(automate_context, reconstructPar_log)
+
+    reconstructParMesh_log = os.path.join(case_folder, 'log.reconstructParMesh')
+    add_to_store_if_exist(automate_context, reconstructParMesh_log)
+
+    simpleFoam_log = os.path.join(case_folder, 'log.simpleFoam')
+    add_to_store_if_exist(automate_context, simpleFoam_log)
+
+    snappyHexMesh_log = os.path.join(case_folder, 'log.snappyHexMesh')
+    add_to_store_if_exist(automate_context, snappyHexMesh_log)
+
+    surfaceFeatures_log = os.path.join(case_folder, 'log.surfaceFeatures')
+    add_to_store_if_exist(automate_context, surfaceFeatures_log)
+    
+
     # if the function generates file results, this is how it can be
     # attached to the Speckle project / model
     # automate_context.store_file_result("./report.pdf")
@@ -149,6 +174,10 @@ def automate_function(
 
     # We shouldn't create new version under the same model. This will trigger infinite loop -> Don't
     # automate_context.create_new_version_in_project(base, automate_context.automation_run_data.model_id)
+
+def add_to_store_if_exist(automate_context: AutomationContext, path):
+    if os.path.exists(path):
+        automate_context.store_file_result(path)
 
 
 # make sure to call the function with the executor
