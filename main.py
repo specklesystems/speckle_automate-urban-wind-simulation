@@ -106,6 +106,30 @@ def automate_function(
     completed_process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     print(completed_process.stdout)
 
+    blockMesh_log = os.path.join(case_folder, 'log.blockMesh')
+    add_to_store_if_exist(automate_context, blockMesh_log)
+
+    decomposePar_log = os.path.join(case_folder, 'log.decomposePar')
+    add_to_store_if_exist(automate_context, decomposePar_log)
+    
+    patchSummary_log = os.path.join(case_folder, 'log.patchSummary')
+    add_to_store_if_exist(automate_context, patchSummary_log)
+
+    reconstructPar_log = os.path.join(case_folder, 'log.reconstructPar')
+    add_to_store_if_exist(automate_context, reconstructPar_log)
+
+    reconstructParMesh_log = os.path.join(case_folder, 'log.reconstructParMesh')
+    add_to_store_if_exist(automate_context, reconstructParMesh_log)
+
+    simpleFoam_log = os.path.join(case_folder, 'log.simpleFoam')
+    add_to_store_if_exist(automate_context, simpleFoam_log)
+
+    snappyHexMesh_log = os.path.join(case_folder, 'log.snappyHexMesh')
+    add_to_store_if_exist(automate_context, snappyHexMesh_log)
+
+    surfaceFeatures_log = os.path.join(case_folder, 'log.surfaceFeatures')
+    add_to_store_if_exist(automate_context, surfaceFeatures_log)
+
     vtk_file = os.path.join(case_folder, 'postProcessing',
                             'cutPlaneSurface', '400', 'U_cutPlane.vtk')
     
@@ -139,31 +163,6 @@ def automate_function(
         )
     else:
         automate_context.mark_run_success("Object found to run simulation!")
-
-    blockMesh_log = os.path.join(case_folder, 'log.blockMesh')
-    add_to_store_if_exist(automate_context, blockMesh_log)
-
-    decomposePar_log = os.path.join(case_folder, 'log.decomposePar')
-    add_to_store_if_exist(automate_context, decomposePar_log)
-    
-    patchSummary_log = os.path.join(case_folder, 'log.patchSummary')
-    add_to_store_if_exist(automate_context, patchSummary_log)
-
-    reconstructPar_log = os.path.join(case_folder, 'log.reconstructPar')
-    add_to_store_if_exist(automate_context, reconstructPar_log)
-
-    reconstructParMesh_log = os.path.join(case_folder, 'log.reconstructParMesh')
-    add_to_store_if_exist(automate_context, reconstructParMesh_log)
-
-    simpleFoam_log = os.path.join(case_folder, 'log.simpleFoam')
-    add_to_store_if_exist(automate_context, simpleFoam_log)
-
-    snappyHexMesh_log = os.path.join(case_folder, 'log.snappyHexMesh')
-    add_to_store_if_exist(automate_context, snappyHexMesh_log)
-
-    surfaceFeatures_log = os.path.join(case_folder, 'log.surfaceFeatures')
-    add_to_store_if_exist(automate_context, surfaceFeatures_log)
-    
 
     # if the function generates file results, this is how it can be
     # attached to the Speckle project / model
