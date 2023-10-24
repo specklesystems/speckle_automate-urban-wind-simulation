@@ -102,11 +102,9 @@ def automate_function(
     cmd_path = os.path.join(case_folder, './Allrun')
     cmd = "/bin/bash -c '{cmd_path}'".format(cmd_path=cmd_path)
 
-    pipefile = open('output', 'w')
     # retcode = subprocess.call(cmd, shell=True, stdout=pipefile)
-    subprocess.run(cmd, shell=True, stdout=pipefile)
-    pipefile.close()
-    os.remove('output')
+    completed_process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    print(completed_process.stdout)
 
     vtk_file = os.path.join(case_folder, 'postProcessing',
                             'cutPlaneSurface', '400', 'U_cutPlane.vtk')
@@ -139,7 +137,6 @@ def automate_function(
             "Automation failed: "
             "Not found appropriate object to run CFD simulation."
         )
-
     else:
         automate_context.mark_run_success("Object found to run simulation!")
 
