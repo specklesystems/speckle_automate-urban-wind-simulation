@@ -133,7 +133,7 @@ def automation_run_data(
         automation_run_id=automation_run_id,
         function_id=function_id,
         function_name="test",
-        function_release=function_release,
+        function_logo=function_release,
     )
 
 
@@ -142,7 +142,7 @@ def test_function_run(automation_run_data: AutomationRunData, speckle_token: str
     automate_sdk = run_function(
         AutomationContext.initialize(automation_run_data, speckle_token),
         automate_function,
-        FunctionInputs(wind_speed=10, wind_direction=0),
+        FunctionInputs(wind_speed=10, wind_direction=45),
     )
 
     assert automate_sdk.run_status == AutomationStatus.FAILED
