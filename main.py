@@ -58,6 +58,7 @@ def automate_function(
         function_inputs: An instance object matching the defined schema.
     """
 
+    print("number of cpus", os.cpu_count())
     subprocess.run("/bin/bash -c 'source /opt/openfoam9/etc/bashrc'", shell=True)
     
     # the context provides a conveniet way, to receive the triggering version
