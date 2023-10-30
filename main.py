@@ -140,7 +140,7 @@ def automate_function(
     vtk_file = os.path.join(case_folder, 'postProcessing',
                             'cutPlaneSurface', '400', 'U_cutPlane.vtk')
     
-    result_mesh = vtk_to_speckle(vtk_file, domain.center.move(Vector3d(domain.x / 2, -domain.y / 2, 0)))
+    result_mesh = vtk_to_speckle(vtk_file, domain.center.move(Vector3d(domain.x / 2 + 2, -domain.y / 2 - 2, 0)))
 
     result = Base()
     result.data = [result_mesh]
