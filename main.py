@@ -42,6 +42,11 @@ class FunctionInputs(AutomateBase):
         title="Wind Speed",
         description="Wind speed (m/s) in XY plane."
     )
+    number_of_cpus: int = Field(
+        title="Number of CPUs",
+        description="Number of CPUs to run simulation parallelly.",
+        default=4,
+    )
 
 
 def automate_function(
@@ -99,7 +104,7 @@ def automate_function(
 
     # Get case folder
     case_folder = os.path.join(archaea_folder, version_root_object.id)
-    domain.create_case(case_folder)
+    domain.create_case(case_folder, function_inputs.number_of_cpus)
     cmd_path = os.path.join(case_folder, './Allrun')
     cmd = "/bin/bash -c '{cmd_path}'".format(cmd_path=cmd_path)
 
