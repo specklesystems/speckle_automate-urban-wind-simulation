@@ -7,8 +7,9 @@ import subprocess
 
 from archaea.geometry.vector3d import Vector3d
 from archaea.geometry.mesh import Mesh
+from archaea.geometry.point3d import Point3d
 from archaea_simulation.simulation_objects.domain import Domain
-from archaea_simulation.speckle.vtk_to_speckle import vtk_to_speckle
+from archaea_simulation.speckle.vtk_to_speckle import vtk_to_speckle, Text
 from archaea_simulation.cfd.utils.path import get_cfd_export_path
 from pydantic import Field
 from speckle_automate import (
@@ -18,10 +19,13 @@ from speckle_automate import (
 )
 from specklepy.api import operations
 from specklepy.objects.base import Base
-from specklepy.objects.geometry import Brep
+from specklepy.objects.other import DisplayStyle
+from specklepy.objects.geometry import Brep, Line, Polyline, Point, Plane
 from specklepy.transports.server import ServerTransport
 
 from flatten import flatten_base
+
+# # TODO: Use speckle text object when specklepy has new release
 
 
 class FunctionInputs(AutomateBase):
@@ -142,8 +146,13 @@ def automate_function(
     
     result_mesh = vtk_to_speckle(vtk_file, domain.center.move(Vector3d(domain.x / 2 + 2, -domain.y / 2 - 2, 0)))
 
+    domain_corner_lines = domain_lines(domain.corners)
+    subdomain_corner_lines = domain_lines(domain.subdomain_corners)
+
+    arrow_line, arrow, text = wind_direction_arrow(domain)    
+
     result = Base()
-    result.data = [result_mesh]
+    result.data = [result_mesh, domain_corner_lines, subdomain_corner_lines, [arrow_line, arrow, text]]
 
     transport = ServerTransport(automate_context.automation_run_data.project_id, automate_context.speckle_client)
     obj_id = operations.send(result, [transport])
@@ -171,6 +180,77 @@ def automate_function(
     else:
         automate_context.mark_run_success("Object found to run simulation!")
 
+def wind_direction_arrow(domain: Domain):
+    p0 = domain.corners[0]
+    p1 = domain.corners[1]
+    mid = Point3d((p0.x + p1.x) / 2, (p0.y + p1.y) / 2, (p0.z + p1.z) / 2)
+    vector = domain.center.vector_to(mid).normalize()
+    
+    mid = mid.move(vector.scale(5))
+
+    point_left = mid.move(vector.scale(2)).rotate(Vector3d(0, 0, 1), 45, mid)
+    point_right = mid.move(vector.scale(2)).rotate(Vector3d(0, 0, 1), -45, mid)
+    offset_mid_2 = mid.move(vector.scale(2 ** 0.5))
+    offset_mid_10 = mid.move(vector.scale(10))
+
+    arrow_line = Polyline.from_points([Point.from_coords(p.x, p.y, p.z) for p in [offset_mid_2, offset_mid_10]])  
+    arrow = Polyline.from_points([Point.from_coords(p.x, p.y, p.z) for p in [mid, point_left, point_right, mid]])
+    
+    x_dir = vector.reverse()
+    y_dir = x_dir.cross_product(Vector3d(0,0,1)).reverse()
+    # rotated_vector = vector.rotate(Vector3d(0,0,1), 90, Point3d(0,0,0))
+    text_v = point_left.move(vector.scale(20))
+    plane = Plane.from_list([text_v.x, text_v.y, text_v.z,
+                            0, 0, 1,
+                            x_dir.x, x_dir.y, 0,
+                            y_dir.x, y_dir.y, 0,
+                            3])
+    
+    text = Text()
+    text.height = 2.5
+    text.value = f"{domain.wind_speed} m/s"
+    text.plane = plane
+    text.units = "m"
+
+    display_style = DisplayStyle()
+    display_style.color = -16777216
+    display_style.linetype = "Continuous"
+    display_style.units = "m"
+    display_style.lineweight = 0
+
+    text.displayStyle = display_style
+
+    return arrow_line, arrow, text
+
+def domain_lines(corners):
+    speckle_domain_points = [Point.from_coords(corner.x, corner.y, corner.z) for corner in corners]
+    floor_polyline = Polyline.from_points(speckle_domain_points[0:4])
+    floor_polyline.closed = True
+    ceiling_polyline = Polyline.from_points(speckle_domain_points[-4:])
+    ceiling_polyline.closed = True
+    
+    line_1 = Line()
+    line_1.units = 'm'
+    line_1.start = speckle_domain_points[0]
+    line_1.end = speckle_domain_points[4]
+
+    line_2 = Line()
+    line_2.units = 'm'
+    line_2.start = speckle_domain_points[1]
+    line_2.end = speckle_domain_points[5]
+
+    line_3 = Line()
+    line_3.units = 'm'
+    line_3.start = speckle_domain_points[2]
+    line_3.end = speckle_domain_points[6]
+
+    line_4 = Line()
+    line_4.units = 'm'
+    line_4.start = speckle_domain_points[3]
+    line_4.end = speckle_domain_points[7]
+    
+    return [floor_polyline,ceiling_polyline,line_1,line_2,line_3,line_4]
+
     # if the function generates file results, this is how it can be
     # attached to the Speckle project / model
     # automate_context.store_file_result("./report.pdf")
@@ -183,7 +263,8 @@ def automate_function(
 
 def add_to_store_if_exist(automate_context: AutomationContext, path):
     if os.path.exists(path):
-        automate_context.store_file_result(path)
+        #automate_context.store_file_result(path)
+        a = 4
 
 
 # make sure to call the function with the executor
