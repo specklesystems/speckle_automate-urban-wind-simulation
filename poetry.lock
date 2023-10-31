@@ -45,13 +45,13 @@ files = [
 
 [[package]]
 name = "archaea"
-version = "1.1.26"
+version = "1.1.27"
 description = "Playground for geometry."
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "archaea-1.1.26-py3-none-any.whl", hash = "sha256:20a0a9fb73f4166272c7512f29b47ff95486f79099b729ddf01409617c1d40cb"},
-    {file = "archaea-1.1.26.tar.gz", hash = "sha256:bdbd503c192b5869f7e7eaf0aa1fe13ee994e35e6f7088e7c9b5ba669e5a8f52"},
+    {file = "archaea-1.1.27-py3-none-any.whl", hash = "sha256:1c8225cfb8c2adf51e328a2f38138a1595cf328813b428fff36a902f69fcb036"},
+    {file = "archaea-1.1.27.tar.gz", hash = "sha256:27e7daadd608c716b4a74a2eedad5727b1c298a20e688ba853b5f8d8a6615703"},
 ]
 
 [package.dependencies]
@@ -60,17 +60,17 @@ numpy-stl = ">=3.0.0,<4.0.0"
 
 [[package]]
 name = "archaea-simulation"
-version = "1.1.30"
+version = "1.1.32"
 description = "Wrapper definitions for simulation tools."
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "archaea_simulation-1.1.30-py3-none-any.whl", hash = "sha256:ee7c41a765ad9e61823e18b1437c5713cab01087209f83f17f3f25db6bdb47f9"},
-    {file = "archaea_simulation-1.1.30.tar.gz", hash = "sha256:38fac5142550fd6dceac29b309562858e51eeef148d0867a2cc6698a4f9db751"},
+    {file = "archaea_simulation-1.1.32-py3-none-any.whl", hash = "sha256:49f69e820f6a33fce8769432f73d4ad884b88bf98d2944a8417c52f328e605d2"},
+    {file = "archaea_simulation-1.1.32.tar.gz", hash = "sha256:9d8e5545aa04ade4ad730b56120a358b2d31a6c12439cc95ee4c49a11fc88219"},
 ]
 
 [package.dependencies]
-archaea = "1.1.26"
+archaea = "1.1.27"
 specklepy = ">=2.17.5,<3.0.0"
 vtk = ">=9.2.6,<10.0.0"
 
@@ -1867,4 +1867,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "de5dfeb5e6a039cfabcd275b5d272170efefa1a3f7e408c7ec78afc86226ee2e"
+content-hash = "bccc6a2c30a7886b834857c1e02bcedae3d3a431d23ae832014550c3cd136ded"
