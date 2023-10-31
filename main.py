@@ -181,10 +181,12 @@ def automate_function(
         automate_context.mark_run_success("Object found to run simulation!")
 
 def wind_direction_arrow(domain: Domain):
-    p0 = domain.corners[0]
-    p1 = domain.corners[1]
-    mid = Point3d((p0.x + p1.x) / 2, (p0.y + p1.y) / 2, (p0.z + p1.z) / 2)
-    vector = domain.center.vector_to(mid).normalize()
+    # p0 = domain.corners[2]
+    # p1 = domain.corners[3]
+    # mid = Point3d((p0.x + p1.x) / 2, (p0.y + p1.y) / 2, (p0.z + p1.z) / 2)
+    wind_vector = Vector3d.from_azimuth_angle(domain.wind_direction)
+    vector = wind_vector.reverse()
+    mid = domain.center.move(vector.scale(domain.y / 2))
     
     mid = mid.move(vector.scale(5))
 
@@ -198,7 +200,6 @@ def wind_direction_arrow(domain: Domain):
     
     x_dir = vector.reverse()
     y_dir = x_dir.cross_product(Vector3d(0,0,1)).reverse()
-    # rotated_vector = vector.rotate(Vector3d(0,0,1), 90, Point3d(0,0,0))
     text_v = point_left.move(vector.scale(20))
     plane = Plane.from_list([text_v.x, text_v.y, text_v.z,
                             0, 0, 1,
