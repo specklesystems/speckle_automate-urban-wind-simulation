@@ -47,6 +47,10 @@ class FunctionInputs(AutomateBase):
         title="Wind Speed",
         description="Wind speed (m/s) in XY plane."
     )
+    reference_height: float = Field(
+        title="Reference Wind Speed Height",
+        description="Altitude (m) of the wind speed is measured."
+    )
     number_of_cpus: int = Field(
         title="Number of CPUs",
         description="Number of CPUs to run simulation parallelly.",
