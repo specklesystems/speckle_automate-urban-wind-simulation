@@ -57,6 +57,23 @@ class FunctionInputs(AutomateBase):
         description="Number of CPUs to run simulation parallelly.",
         default=4,
     )
+    tunnel_width_scale: float = Field(
+        title="Tunnel width scale",
+        description="Scale value of the tunnel width according to context objects bounding box. " /
+        "It scales the inlet surface which we send wind into tunnel.",
+        default=5,
+    )
+    tunnel_depth_scale: float = Field(
+        title="Tunnel depth scale",
+        description="Scale value of the tunnel depth according to context objects bounding box.",
+        default=5,
+    )
+    tunnel_height_scale: float = Field(
+        title="Tunnel height scale",
+        description="Scale value of the tunnel height according to context objects bounding box." /
+        "It scales from zGround.",
+        default=3,
+    ) 
 
 
 def automate_function(
@@ -104,8 +121,11 @@ def automate_function(
         archaea_mesh = Mesh.from_ngon_mesh(speckle_mesh.vertices, speckle_mesh.faces)
         archaea_meshes.append(archaea_mesh)
 
+    x_scale = function_inputs.tunnel_width_scale
+    y_scale = function_inputs.tunnel_depth_scale
+    z_scale = function_inputs.tunnel_height_scale
     # Init domain
-    domain = Domain.from_meshes(archaea_meshes, x_scale=5, y_scale=5, z_scale=3, wind_direction=function_inputs.wind_direction, wind_speed=function_inputs.wind_speed)
+    domain = Domain.from_meshes(archaea_meshes, x_scale=x_scale, y_scale=y_scale, z_scale=z_scale, wind_direction=function_inputs.wind_direction, wind_speed=function_inputs.wind_speed)
 
     # Get folder to copy cases
     archaea_folder = get_cfd_export_path()
