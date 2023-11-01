@@ -10,7 +10,7 @@
 
 Direction of the wind represents with meteorological angles designated by δ, increase clockwise from the north (y) axis. Math angles, designated by α, increase counterclockwise from the east (x) axis.
 
-![Math & Meteo Angles](/img/math_meteo_angles.png)
+![Math & Meteo Angles](/img/math_meteo_angle.png)
 
 2. Wind Speed
 
