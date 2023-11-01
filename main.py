@@ -59,8 +59,8 @@ class FunctionInputs(AutomateBase):
     )
     tunnel_width_scale: float = Field(
         title="Tunnel width scale",
-        description="Scale value of the tunnel width according to context objects bounding box. " /
-        "It scales the inlet surface which we send wind into tunnel.",
+        description=("Scale value of the tunnel width according to context objects bounding box. "
+        "It scales the inlet surface which we send wind into tunnel."),
         default=5,
     )
     tunnel_depth_scale: float = Field(
@@ -70,8 +70,8 @@ class FunctionInputs(AutomateBase):
     )
     tunnel_height_scale: float = Field(
         title="Tunnel height scale",
-        description="Scale value of the tunnel height according to context objects bounding box." /
-        "It scales from zGround.",
+        description=("Scale value of the tunnel height according to context objects bounding box. "
+        "It scales from zGround."),
         default=3,
     ) 
 
