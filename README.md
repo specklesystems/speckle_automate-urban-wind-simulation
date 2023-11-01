@@ -14,7 +14,7 @@ Domain orientation should be parallel to provided wind direction to calculate ef
 
 ### 2. Atmospheric Boundary Layer (WIP)
 
-Wind speed info collected from weather stations with exact values for exact heights. Creating an atmospheric boundary layer from reference wind speeds and heights is a must since higher altitudes are considered. 
+Wind speed info collected from weather stations with exact values for exact heights. Creating an atmospheric boundary layer from reference wind speeds and heights is a must since higher altitudes are considered.
 
 ![Atmospheric Boundary Layer](/img/abl.png)
 
