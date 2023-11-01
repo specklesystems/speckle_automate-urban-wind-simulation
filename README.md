@@ -22,6 +22,12 @@ Wind speed info collected from weather stations with exact values for exact heig
 
 Reference wind speed height helps to create atmospheric boundary layer for urban wind simulations.
 
+5. Wind Tunnel Sizing
+
+Wind tunnel represents with domain which air flows in it. Automate function calculates bounding box aligned with wind direction for geometries that aiming to simulate, then with this bounding box function scales domain with given function inputs.
+
+![Wind Tunnel Sizing](/img/wind_tunnel_sizing.png)
+
 4. Number of CPUs
 
 Number of cores to run parallelly.
