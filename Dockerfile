@@ -3,7 +3,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # setup timezone
 ENV TZ=Europe/Istanbul
-ENV VM_PROJECT_DIR=/opt/openfoam11
+ENV VM_PROJECT_DIR=/opt/openfoam9
 
 # Create a non-root user 
 RUN useradd -ms /bin/bash openfoamRunner
@@ -15,10 +15,10 @@ RUN apt install -y wget software-properties-common python3-pip
 RUN wget -O - https://dl.openfoam.org/gpg.key > /etc/apt/trusted.gpg.d/openfoam.asc
 RUN add-apt-repository http://dl.openfoam.org/ubuntu
 RUN apt-get update
-RUN apt-get -y --no-install-recommends install openfoam11
+RUN apt-get -y --no-install-recommends install openfoam9
 
-RUN echo "source /opt/openfoam11/etc/bashrc" >> /root/.bashrc
-RUN echo "source /opt/openfoam11/etc/bashrc" >> /home/openfoamRunner/.bashrc
+RUN echo "source /opt/openfoam9/etc/bashrc" >> /root/.bashrc
+RUN echo "source /opt/openfoam9/etc/bashrc" >> /home/openfoamRunner/.bashrc
 
 RUN pip install poetry
 
