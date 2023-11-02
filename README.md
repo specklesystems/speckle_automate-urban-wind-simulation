@@ -4,9 +4,9 @@
 
 ![CFD Sample Result](/img/sample_result.png)
 
-## Key Concepts
+# Key Concepts
 
-### 1. Domain Orientation
+## 1. Domain Orientation
 
 In urban wind simulation, the proper orientation of the computational domain is crucial to accurately assess the effects of wind on urban environments. The domain orientation is typically defined in relation to the prevailing wind direction. This relationship ensures that the simulated wind flow aligns with the real-world wind conditions and enables the precise modeling of urban airflow.
 
@@ -14,7 +14,7 @@ The direction of the wind is commonly represented using meteorological angles (Î
 
 ![Math & Meteo Angles](/img/math_meteo_angles.png)
 
-### 2. Atmospheric Boundary Layer (WIP)
+## 2. Atmospheric Boundary Layer (WIP)
 
 Wind speed data collected from weather stations provides precise values for specific heights. However, when it comes to simulating wind behavior at varying altitudes, creating an atmospheric boundary layer (ABL) is not just a recommended practice; it's an absolute necessity.
 
@@ -22,7 +22,7 @@ As pointed out weather stations typically provide wind data at specific heights 
 
 ![Atmospheric Boundary Layer](/img/abl.png)
 
-### 3. Wind Tunnel Sizing
+## 3. Wind Tunnel Sizing
 
 A wind tunnel serves as the designated domain where air flows during simulations. The automation function plays a crucial role in determining the bounding box's alignment with the wind direction for geometries targeted for simulation. It then scales the computational domain according to the specified function inputs. The domain's size is a critical factor in wind simulations, as it directly impacts various aspects, including simulation time and the number of volume meshes.
 
@@ -30,7 +30,7 @@ A wind tunnel serves as the designated domain where air flows during simulations
 
 Wind tunnels are essential for accurately modeling wind flow around complex geometries, such as buildings or structures. They provide a controlled environment where the effects of wind can be studied, enabling engineers and researchers to gain insights into aerodynamic behavior, pressure distributions, and other critical parameters. Wind tunnels ensure that simulations closely match real-world conditions.
 
-#### Automated Alignment and Scaling
+### Automated Alignment and Scaling
 
 The automated function for bounding box alignment and domain scaling simplifies and streamlines the simulation process. It ensures that the domain is appropriately aligned with the prevailing wind direction for the specific geometry under study. The ability to automate these tasks reduces the potential for errors and makes it easier to adapt simulations to different scenarios and geometries.
 
@@ -45,7 +45,7 @@ In wind simulations, the number of volume meshes generated is closely tied to th
 
 ![Wind Tunnel Sizing](/img/wind_tunnel_sizing.png)
 
-### 4. Parallel Computing
+## 4. Parallel Computing
 
 OpenFOAM supports parallelism through domain decomposition, which involves dividing the computational domain into smaller subdomains that can be solved concurrently. This approach allows for efficient distribution of computational work, reducing simulation times and enabling the modeling of larger and more complex problems.
 
@@ -68,6 +68,6 @@ In urban wind simulations, various factors come into play, including the presenc
 #### Handling Large Data Sets
 Urban-scale simulations often generate extensive data sets for analysis. Parallelism allows simulations to efficiently handle and process the large volumes of data generated, ensuring that researchers can extract valuable insights from the simulations in a timely manner.
 
-## Supported Speckle Objects
+## 5. Supported Speckle Objects
 
 - Objects.Geometry.Brep
