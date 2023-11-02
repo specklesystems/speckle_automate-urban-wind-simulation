@@ -60,13 +60,13 @@ numpy-stl = ">=3.0.0,<4.0.0"
 
 [[package]]
 name = "archaea-simulation"
-version = "1.1.33"
+version = "1.2.0"
 description = "Wrapper definitions for simulation tools."
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "archaea_simulation-1.1.33-py3-none-any.whl", hash = "sha256:83d5bac5815a4bef35d97bd8eb1db9e1da37a48312d7c84ad95691500558aa26"},
-    {file = "archaea_simulation-1.1.33.tar.gz", hash = "sha256:1f7ce246ee45c95ce0b12826b4754d2b9d5178b7a01c176b6ab728a58ef927a6"},
+    {file = "archaea_simulation-1.2.0-py3-none-any.whl", hash = "sha256:2b9ed01a379837907af562c758466a8d2d3dc79d5bb1a7cfdd1dae500a5efcd0"},
+    {file = "archaea_simulation-1.2.0.tar.gz", hash = "sha256:160360e0ad661f515d614933e3a222085a4fe3cd257527debbff4a697a8ea60f"},
 ]
 
 [package.dependencies]
@@ -1867,4 +1867,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "95873430c39fbdfb30a8820873e37003e3788ae26a0005eb77503bcec1460c0e"
+content-hash = "71fba3a6e5e450c18f9fd0c2f0d6fd7d1e7db2b2e46745b1407e7c4abc321c9e"
