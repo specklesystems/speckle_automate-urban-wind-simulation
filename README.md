@@ -30,7 +30,7 @@ A wind tunnel serves as the designated domain where air flows during simulations
 
 Wind tunnels are essential for accurately modeling wind flow around complex geometries, such as buildings or structures. They provide a controlled environment where the effects of wind can be studied, enabling engineers and researchers to gain insights into aerodynamic behavior, pressure distributions, and other critical parameters. Wind tunnels ensure that simulations closely match real-world conditions.
 
-### Automated Alignment and Scaling
+#### Automated Alignment and Scaling
 
 The automated function for bounding box alignment and domain scaling simplifies and streamlines the simulation process. It ensures that the domain is appropriately aligned with the prevailing wind direction for the specific geometry under study. The ability to automate these tasks reduces the potential for errors and makes it easier to adapt simulations to different scenarios and geometries.
 
