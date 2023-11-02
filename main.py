@@ -179,22 +179,26 @@ def automate_function(
     result = Base()
     result.data = [result_mesh, domain_corner_lines, subdomain_corner_lines, [arrow_line, arrow, text]]
 
-    transport = ServerTransport(automate_context.automation_run_data.project_id, automate_context.speckle_client)
-    obj_id = operations.send(result, [transport])
-    result_branch_name = automate_context.automation_run_data.branch_name + "_result"
-    automate_context.speckle_client.branch.create(
-        automate_context.automation_run_data.project_id, 
-        result_branch_name
-        )
+    # transport = ServerTransport(automate_context.automation_run_data.project_id, automate_context.speckle_client)
+    # obj_id = operations.send(result, [transport])
+    # result_branch_name = automate_context.automation_run_data.branch_name + "_result"
+    # automate_context.speckle_client.branch.create(
+    #     automate_context.automation_run_data.project_id, 
+    #     result_branch_name
+    #     )
 
-    # now create a commit on that branch with your updated data!
-    commit_id = automate_context.speckle_client.commit.create(
-        automate_context.automation_run_data.project_id,
-        obj_id,
-        result_branch_name,
-        message="Sent from Archaea.",
-        source_application='Archaea'
+    automate_context.create_new_version_in_project(
+        result,
+        "automate_result"
     )
+    # now create a commit on that branch with your updated data!
+    # commit_id = automate_context.speckle_client.commit.create(
+    #     automate_context.automation_run_data.project_id,
+    #     obj_id,
+    #     result_branch_name,
+    #     message="Sent from Archaea.",
+    #     source_application='Archaea'
+    # )
 
     if count == 0:
         # this is how a run is marked with a failure cause
