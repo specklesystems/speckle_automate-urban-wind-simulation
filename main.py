@@ -293,9 +293,7 @@ def domain_lines(corners):
 
 def add_to_store_if_exist(automate_context: AutomationContext, path):
     if os.path.exists(path):
-        #automate_context.store_file_result(path)
-        a = 4
-
+        automate_context.store_file_result(path)
 
 # make sure to call the function with the executor
 if __name__ == "__main__":
