@@ -29,10 +29,12 @@ jobs:
         run: |
           python3 main.py generate_schema ${HOME}/${{ env.FUNCTION_SCHEMA_FILE_NAME }}
       - name: Speckle Automate Function - Build and Publish
-        uses: specklesystems/speckle-automate-github-composite-action@0.6.7
+        uses: specklesystems/speckle-automate-github-composite-action@0.7.0
         with:
           speckle_automate_url: ${{ env.SPECKLE_AUTOMATE_URL || 'https://automate.speckle.dev' }} 
           speckle_token: ${{ secrets.SPECKLE_FUNCTION_TOKEN }}
           speckle_function_id: ${{ secrets.SPECKLE_FUNCTION_ID }}
           speckle_function_input_schema_file_path: ${{ env.FUNCTION_SCHEMA_FILE_NAME }}
           speckle_function_command: 'python3 main.py run'
+          speckle_function_recommended_cpu_m: '4000'
+          speckle_function_recommended_memory_mi: '16000'
