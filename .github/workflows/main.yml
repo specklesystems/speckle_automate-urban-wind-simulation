@@ -36,5 +36,5 @@ jobs:
           speckle_function_id: ${{ secrets.SPECKLE_FUNCTION_ID }}
           speckle_function_input_schema_file_path: ${{ env.FUNCTION_SCHEMA_FILE_NAME }}
           speckle_function_command: 'python3 main.py run'
-          speckle_function_recommended_cpu_m: '15899'
+          speckle_function_recommended_cpu_m: '15000'
           speckle_function_recommended_memory_mi: '8000'
