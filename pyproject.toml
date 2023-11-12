@@ -8,7 +8,7 @@ packages = [{include = "src/speckle_automate_py"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-specklepy = "2.17.9"
+specklepy = "2.17.11"
 archaea-simulation = "1.2.0" 
 
 [tool.poetry.group.dev.dependencies]
