@@ -104,12 +104,7 @@ def automate_function(
         if b.speckle_type in accepted_types:
             if not b.id:
                 raise ValueError("Cannot operate on objects without their id's.")
-            
             objects_to_create_stl.append(b)
-            # automate_context.add_object_info(
-            #     b.id,
-            #     "Object included into simulation domain with " f"{b.speckle_type} type."
-            # )
             count += 1
 
     speckle_meshes = []
@@ -179,26 +174,10 @@ def automate_function(
     result = Base()
     result.data = [result_mesh, domain_corner_lines, subdomain_corner_lines, [arrow_line, arrow, text]]
 
-    # transport = ServerTransport(automate_context.automation_run_data.project_id, automate_context.speckle_client)
-    # obj_id = operations.send(result, [transport])
-    # result_branch_name = automate_context.automation_run_data.branch_name + "_result"
-    # automate_context.speckle_client.branch.create(
-    #     automate_context.automation_run_data.project_id, 
-    #     result_branch_name
-    #     )
-
     automate_context.create_new_version_in_project(
         result,
         "automate_result"
     )
-    # now create a commit on that branch with your updated data!
-    # commit_id = automate_context.speckle_client.commit.create(
-    #     automate_context.automation_run_data.project_id,
-    #     obj_id,
-    #     result_branch_name,
-    #     message="Sent from Archaea.",
-    #     source_application='Archaea'
-    # )
 
     if count == 0:
         # this is how a run is marked with a failure cause
@@ -210,9 +189,6 @@ def automate_function(
         automate_context.mark_run_success("Object found to run simulation!")
 
 def wind_direction_arrow(domain: Domain):
-    # p0 = domain.corners[2]
-    # p1 = domain.corners[3]
-    # mid = Point3d((p0.x + p1.x) / 2, (p0.y + p1.y) / 2, (p0.z + p1.z) / 2)
     wind_vector = Vector3d.from_azimuth_angle(domain.wind_direction)
     vector = wind_vector.reverse()
     mid = domain.center.move(vector.scale(domain.y / 2))
@@ -281,15 +257,6 @@ def domain_lines(corners):
     
     return [floor_polyline,ceiling_polyline,line_1,line_2,line_3,line_4]
 
-    # if the function generates file results, this is how it can be
-    # attached to the Speckle project / model
-    # automate_context.store_file_result("./report.pdf")
-    # base = Base()
-    # automate_context.create_new_version_in_project(base, automate_context.speckle_client.branch.create(automate_context.automation_run_data.project_id, "whatever"))
-    # branch_or_error = automate_context.speckle_client.branch.get(automate_context.automation_run_data.project_id, "whatever")
-
-    # We shouldn't create new version under the same model. This will trigger infinite loop -> Don't
-    # automate_context.create_new_version_in_project(base, automate_context.automation_run_data.model_id)
 
 def add_to_store_if_exist(automate_context: AutomationContext, path):
     if os.path.exists(path):
