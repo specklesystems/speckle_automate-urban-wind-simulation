@@ -49,8 +49,6 @@ In wind simulations, the number of volume meshes generated is closely tied to th
 
 OpenFOAM supports parallelism through domain decomposition, which involves dividing the computational domain into smaller subdomains that can be solved concurrently. This approach allows for efficient distribution of computational work, reducing simulation times and enabling the modeling of larger and more complex problems.
 
-OpenFOAM incorporates parallelism through domain decomposition, a technique that divides the computational domain into smaller subdomains that can be solved concurrently. This approach offers several advantages, making it a key component of efficient computational simulations.
-
 #### Efficient Computational Work Distribution
 
 Domain decomposition is a fundamental technique that optimizes the distribution of computational work among multiple processing units (cores or nodes). By breaking the domain into smaller, manageable subdomains, each subdomain can be solved independently by a separate processor. This efficient distribution of work enables parallel processing, significantly reducing simulation times for complex problems.
